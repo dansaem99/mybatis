@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding= 'utf-8' ?>
+<!DOCTYPE configuration PUBLIC './/mybatis.org//DTD config 3.0//EN'
+	'http://mybatis.org/dtd/mybatis-3-config.dtd'> 
+<configuration>  
+	<!-- configuration : DB로 전달하거나 전달 받을 때의 레코드 형태 -->
+	 <properties resource= 'config/jdbc.properties'>
+		<property name='driver' value='oracle.jdbc.driver.OracleDriver'/>
+	</properties> 
+	<!--
+	<properties resource='config/hr.properties'/>
+	-->
+	<settings>
+		<setting name='cacheEnabled' value='false'/>
+		<setting name='localCacheScope' value='STATEMENT'/>
+	</settings>
+	<!-- 레코드의 형태를 user로 지정한다. -->
+	<typeAliases>
+		<typeAlias type= 'ch02.domain.User' alias='user'/>
+		<!-- 아래 코드는 별명을 자동부여한다. 
+		2개를 부여하는데 하나는 소문자로 하나는 대문자로 시작한다-->
+		<package name= 'ch03.domain'/>
+	</typeAliases>
+	
+	<environments default='development'>
+		<environment id='development'>
+			<transactionManager type='JDBC'/>
+			<dataSource type='POOLED'>
+			<!--<property name='driver' value='${oracle.jdbc.driver.OracleDriver}'/> -->
+				<property name='driver' value='${driver}'/>
+				<property name='url' value='${url}'/>
+				<property name='username' value='${username}'/>
+				<property name='password' value='${password}'/>
+			</dataSource>
+		</environment>
+		<environment id='hr'>
+			<transactionManager type='JDBC'/>
+			<dataSource type='POOLED'>
+				<property name='driver' value='${driver}'/>
+				<property name='url' value='${url}'/>
+				<property name='username' value='${username}'/>
+				<property name='password' value='${password}'/>
+			</dataSource>
+		</environment>
+		
+	</environments>
+	<!-- sql문이 있는 xml을 읽어들입니다. 패키지 이름 전부 작성해줘야 합니다. -->
+	<mappers>
+	<!-- 여기에 등록시켜야 읽는다. -->
+		<mapper resource='ch02/ex01/sqlMap.xml'/>
+		<mapper resource='ch02/ex02/sqlMap.xml'/>
+		<mapper resource='ch02/ex03/sqlMap.xml'/>
+		<mapper resource='ch02/ex04/sqlMap.xml'/>
+		<mapper resource='ch02/ex05/sqlMap.xml'/>
+		<mapper resource='ch03/ex01/sqlMap.xml'/>
+		<mapper resource='ch03/ex02/sqlMap.xml'/>
+		<mapper resource='ch04/ex01/sqlMap.xml'/>
+		<mapper resource='ch04/ex02/sqlMap.xml'/>
+		<mapper resource='ch05/ex01/sqlMap.xml'/>
+		<mapper resource='ch05/ex02/sqlMap.xml'/>
+		<mapper resource='ch05/ex03/sqlMap.xml'/>
+		<mapper resource='ch05/ex04/sqlMap.xml'/>
+		<mapper resource='ch05/ex05/sqlMap.xml'/>
+		<mapper resource='ch05/ex06/sqlMap.xml'/>
+		<mapper resource='ch05/ex07/sqlMap.xml'/>
+		<!-- 이름은 데이터와 뒤에 Map을 붙여주면 된다. -->
+		<!-- resource는/ -->
+		<mapper resource='ch06/dao/map/employeeMap.xml'/> 
+		<!-- 클래스는 점을 사용 -->
+		<mapper class='ch07.ex01.Map'/>
+		<mapper class='ch07.ex02.Map'/>
+		<mapper class='ch07.ex03.Map'/>
+		<mapper class='ch07.ex04.Map'/>
+		<mapper class='ch07.ex05.Map'/>
+	</mappers>
+</configuration>

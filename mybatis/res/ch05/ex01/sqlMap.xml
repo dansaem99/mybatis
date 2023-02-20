@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE mapper PUBLIC './/mybatis.org//DTD Mapper 3.0//EN'
+	'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+<mapper namespace='ch05.ex01.Map'>
+	<select id='selectUser' resultMap='userMap'>
+		select users.user_id, user_name, reg_date, post_title, post_content
+		from users join posts
+		on users.user_id = posts.user_id
+		where users.user_name = #{userName}
+		<!-- 다이나믹하게 변화시킨다 -->
+		<!-- true가 되면 return하고 false면 버린다.-->
+		<if test='post != null and post.title != null'> 
+			and post_title like '%' || #{post.title} || '%'
+		</if>
+		<if test='post != null and !post.content.isEmpty()'>
+			and post_content like '%' || #{post.content} || '%'
+		</if>
+	</select>
+	
+	<!-- resultMap을 2개 쓰던걸 하나로 줄였다. -->
+	<resultMap id='userMap' type='ch05.domain.User'>
+		<id property='userId' column='user_id'/>
+		<result property='userName' column='user_name'/>
+		<result property='regDate' column='reg_date'/>
+		<!-- 이름없는 resultMap에서는 ofType 칼럼명으로 표기한다. -->
+		<collection property='posts' ofType='ch05.domain.Post'>
+			<result property='title' column='post_title'/>
+			<result property='content' column='post_content'/>
+		</collection>
+	</resultMap>
+</mapper>

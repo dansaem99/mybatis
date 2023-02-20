@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE mapper PUBLIC './/mybatis.org//DTD Mapper 3.0//EN'
+	'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+<mapper namespace='ch05.ex06.Map'>
+	<!-- 다이나믹한 부분이 비교값으로 사용된다. -->
+	<select id= 'selectUsers' resultType='ch05.domain.User'>
+	<!-- refid selctuser을 복사하겠다는 코드이다. -->
+		<include refid='selectUser'>
+			<property name='tableName' value='users'/>
+		</include>
+		<where>
+			<if test='userIds != null'>
+				user_id in
+				<foreach item='userId' collection='userIds' open='(' separator=',' close=')'>
+					#{userId}
+				</foreach>
+			</if>
+			<if test='userNames != null'>
+				and user_name in
+				<foreach item='userName' collection='userNames' open='(' separator=',' close=')'>
+					#{userName}
+				</foreach>
+			</if>
+		</where>
+	</select>
+	
+	<sql id='selectUser'>
+		select user_id userId, user_name userName, reg_date regDate
+		from ${tableName} <!-- xml에서는 # sql에서 파라미터는 $ -->
+	</sql>
+</mapper>

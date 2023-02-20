@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE mapper PUBLIC './/mybatis.org//DTD Mapper 3.0//EN'
+	'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+	<!-- 네임스페이스를 정해줍니다. 네임스페이스는 중복되면 안됩니다. -->
+<mapper namespace='ch02.ex01.Map'>
+	<!-- 반환되는 값을 selectUsers에 담습니다. -->
+	<select id='selectUsers' resultType='user'>
+	<!--  칼럼 네임과 유저변수가 일치해야 한다. -->
+		select user_id userId, user_name userName, reg_date regDate
+		from users
+		order by user_id
+	</select>
+</mapper>

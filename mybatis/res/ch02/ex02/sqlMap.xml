@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE mapper PUBLIC './/mybatis.org//DTD Mapper 3.0//EN'
+	'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+<!-- 다른 맵퍼 객체와는 관계맺지 않는다. -->
+<mapper namespace='ch02.ex02.Map'>
+	<select id='selectUser' resultMap='userMap'>
+		select user_id, user_name, reg_date
+		from users
+		<!-- where user_id = ?     1  -->
+		where user_id = #{userId}
+	</select>
+	<!-- n개의 select가 하나의 resultMap을 이용한다.  -->
+	<select id='selectUser2' resultMap='userMap'>
+		select user_id, user_name, reg_date
+		from users
+		where user_name = #{userName}
+	</select>
+	
+	<select id='selectUser3' resultMap='userMap'>
+		select user_id, user_name, reg_date
+		from users
+		where reg_date = #{regDate}
+	</select>
+	
+	<!-- resultMap은 해당 문서내에서 유일한 이름을 지어주면 된다. -->
+	<resultMap id='userMap' type='user'>
+	<!-- user_id의 필드값을 읽어서 맴버변수 userId에 집어넣는다.-->
+		<id property='userId' column='user_id'/>
+		<result property='userName' column='user_name'/>
+		<result property='regDate' column='reg_date'/>
+	</resultMap> 
+</mapper>

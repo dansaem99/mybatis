@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE mapper PUBLIC './/mybatis.org//DTD Mapper 3.0//EN'
+	'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+<mapper namespace='ch05.ex02.Map'>
+	<!-- 다이나믹 sql관련 코드를 배워보자! -->
+	<select id='selectUser' resultMap='userMap'>
+		<!-- 바인드를 이용해서 변수값을 줄 수 있다. 
+		만약 포스트가 널이면 여기서 바로 널포인트 익셉션 발생한다.-->
+		<bind name='title' value='"%" + post.title + "%"'/>
+		<bind name='content' value= '"%" + post.content + "%"'/>
+		select users.user_id, user_name, reg_date, post_title, post_content
+		from users join posts
+		on users.user_id = posts.user_id
+		where user_name = #{userName}
+		<choose>
+		<!-- 테스트에서 트루가 나오면 sql코드에 포함 false나오면 버린다. -->
+			<when test='post != null and post.title != null'>
+				and posts.post_title like #{title}  <!-- 위에 선언한 변수 사용 -->
+			</when>
+			<when test='post != null and post.content != null'>
+				and posts.post_content like #{content}
+			</when>
+			<!-- 기본을 넣어준다 -->
+			<otherwise>
+				and posts.user_id is not null
+			</otherwise>
+		</choose>
+	<!-- 위에서 부터 차례대로 내려와 처음으로 true가 
+	나온 것만 선택되고 나머지는 버려진다. -->
+	</select>
+	
+	<resultMap id='userMap' type='ch05.domain.User'>
+		<id property='userId' column='user_id'/>
+		<result property='userName' column='user_name'/>
+		<result property='regDate' column='reg_date'/>
+		<collection property='posts' ofType='ch05.domain.Post' columnPrefix='post_'>
+			<result property='title' column='title'/> 
+			<result property='content' column='content'/>
+		</collection>
+	</resultMap>
+</mapper>
+
+<!-- if와 choose의 차이점은? 
+if는 비배타적이고 choose는 배타적이다. -->

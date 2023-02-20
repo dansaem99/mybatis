@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE mapper PUBLIC './/mybatis.org//DTD Mapper 3.0//EN'
+	'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+<!-- 다른 맵퍼 객체와는 관계맺지 않는다. -->
+<mapper namespace='ch02.ex03.Map'>
+	<insert id='insertUser'>
+	<!-- 파람2개 이상 있을 때 파라미터네임 맴버변수와 일치해야 한다. -->
+		insert into users values(
+		<!-- NULL값 넣고 싶을 때 -->
+			#{userId, jdbcType=NUMERIC}, 
+			#{userName, jdbcType=VARCHAR},
+			#{regDate, jdbcType=DATE})
+	</insert>
+	
+	<insert id='insertUser2'>
+	<!-- Map class 어노테이션에 선언한 파람 네임을 지칭한다 -->
+		insert into users values(
+			#{userId},
+			#{userName},
+			#{regDate})
+	</insert>
+	
+	<insert id= 'insertUser3'>
+		insert into users values(
+		<!-- 네임 지정된 것이 없으므로 대명사를 사용한다. -->
+			#{param1},
+			#{param2},
+			#{param3})
+	</insert>
+</mapper>
